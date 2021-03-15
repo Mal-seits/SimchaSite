@@ -1,0 +1,71 @@
+﻿@using SimchaSite.data;
+@model HistoryViewModel
+
+
+<div class="container">
+    <main role="main" class="pb-3" style="margin-top: 60px;">
+        <div class="header">
+            <h1>History for @Model.Contributer.FirstName @Model.Contributer.LastName</h1>
+            <h3>Current Balance: @Model.Contributer.Balance</h3>
+            <div class="row header">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        @if (Model.Contributer.Transactions != null)
+                        {
+
+                            @foreach (Transaction t in Model.Contributer.Transactions)
+                            {
+                                <tr>
+
+                                    <td>
+                                        Deposit
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        @t.Date
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        @t.Amount
+                                    </td>
+                                </tr>
+                               
+                                    @foreach (Transaction trans in Model.Contributions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                Contribution For the @Model.Simcha.FirstOrDefault(s => s.Id == trans.SimchaId).Name
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                @trans.Date
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                -@t.Amount
+                                            </td>
+                                        </tr>
+
+                                    }
+
+                                
+                            }
+                        }
+
+
+
+
+
+
+                    </table>
+                </div>
+                <div style="text-align:center;">
+                    <a class="btn-lg btn-outline-info" href="/contributers/contributers">Back to Contributors</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

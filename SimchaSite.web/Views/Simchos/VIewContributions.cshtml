@@ -1,0 +1,73 @@
+﻿@using SimchaSite.data;
+@model ContributionsViewModel
+
+<div class="container">
+    <main role="main" class="pb-3" style="margin-top: 60px;">
+
+        <div class="header">
+            <h1>
+                Contributors for the
+                @Model.Simcha.Name
+            </h1>
+        </div>
+        <div class="table-responsive">
+            <form method="POST" action="/simchos/UpdateContributions">
+                <input type="hidden" name="simchaId" value="@Model.Simcha.Id" />
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Contribute</th>
+                        <th>Name</th>
+                        <th>Balance</th>
+                        <th>Always Include</th>
+                        <th>Amount</th>
+                    </tr>
+                    @if (Model.Contributers != null)
+                    {
+                        @for (int i = 0; i < Model.Contributers.Count; i++)
+                        {
+
+                            <tr>
+                                <td>
+                                  
+                                    <input class="contribute" type="checkbox" name="transactions[@i].include" 
+                                             @(Model.Contribs.Any(c => c.ContributerId == Model.Contributers[@i].Id) ? "checked" : "")/>
+                                </td>
+                                <td>@Model.Contributers[i].FirstName @Model.Contributers[i].LastName</td>
+                                <td>@Model.Contributers[i].Balance</td>
+                                <td style="text-align: center;">
+                                    @if (Model.Contributers[i].AlwaysInclude)
+                                    {
+                                        <span style="font-size: 25px;" class="oi oi-check"></span>
+                                    }
+
+
+                                </td>
+
+                                <td>
+                                    <input type="text" name="transactions[@i].amount" class="form-control" value="@Model.Contributers[i].Transactions[0].Amount" />
+                                    <input type="hidden" name="transactions[@i].simchaId" value="@Model.Simcha.Id" />
+                                    <input type="hidden" name="transactions[@i].date" value="@DateTime.Now" />
+                                    <input type="hidden" name="transactions[@i].contributerId" value="@Model.Contributers[i].Id" />
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+
+
+                </table>
+
+                <div style="text-align:center;">
+                    <button class="btn-lg btn-danger">Update</button>
+                </div>
+            </form>
+        </div>
+
+
+    </main>
+</div>
+@section Scripts{
+
+    <script src="~/js/Include.js"></script>
+}
